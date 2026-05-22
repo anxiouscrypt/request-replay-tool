@@ -28,3 +28,9 @@
 - Added original request replay.
 - Added edited-body replay.
 - Stored replay results as new request records.
+
+## Phase 6: Frontend Request History
+
+- Created the Vite React TypeScript frontend.
+- Added request history table with method, path, response status, duration, and timestamp.
+- Added refresh and clear controls.

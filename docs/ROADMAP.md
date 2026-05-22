@@ -9,10 +9,10 @@
 - HTTP proxy forwarding
 - SQLite request persistence
 - Replay APIs
+- Request history dashboard
 
 ## Planned
 
-- Request history dashboard
 - Detail and edit/replay UI
 - Backend tests
 
