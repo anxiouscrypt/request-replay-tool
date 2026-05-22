@@ -40,3 +40,9 @@
 - Added request detail view with request headers, request body, and response body.
 - Added original replay action.
 - Added editable JSON body replay workflow.
+
+## Phase 8: Backend Tests
+
+- Added proxy forwarding and persistence tests.
+- Added request history clearing test.
+- Added original replay and edited replay tests.

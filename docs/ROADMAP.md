@@ -11,10 +11,10 @@
 - Replay APIs
 - Request history dashboard
 - Detail and edit/replay UI
+- Backend tests
 
 ## Planned
 
-- Backend tests
 
 ## Future Improvements
 
