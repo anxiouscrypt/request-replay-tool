@@ -10,3 +10,9 @@
 - Captured SQLite request history shape.
 - Documented security limits for local-only use.
 - Defined original replay and edited replay behavior.
+
+## Phase 3: Backend Proxy
+
+- Added FastAPI backend setup.
+- Added `TARGET_BASE_URL` configuration.
+- Implemented `/proxy/{path}` forwarding with method, body, query string, and safe headers.

@@ -6,10 +6,10 @@
 - Documentation baseline
 - Proxy architecture design
 - Security limitations
+- HTTP proxy forwarding
 
 ## Planned
 
-- HTTP proxy forwarding
 - SQLite request persistence
 - Replay APIs
 - Request history dashboard
