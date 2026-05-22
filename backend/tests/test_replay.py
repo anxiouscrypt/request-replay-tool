@@ -23,3 +23,4 @@ def test_replay_with_edited_body(client, fake_http_client):
     replayed = replay_response.json()
     assert replayed["requestBody"] == {"sku": "tea"}
     assert replayed["responseBody"]["received"] == {"sku": "tea"}
+    assert "content-length" not in fake_http_client.calls[-1]["headers"]
