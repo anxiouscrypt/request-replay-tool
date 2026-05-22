@@ -1,10 +1,12 @@
 import type { RequestRecord } from '../lib/types'
 
 type RequestTableProps = {
+  onSelect: (request: RequestRecord) => void
   requests: RequestRecord[]
+  selectedId: string | null
 }
 
-export function RequestTable({ requests }: RequestTableProps) {
+export function RequestTable({ onSelect, requests, selectedId }: RequestTableProps) {
   if (requests.length === 0) {
     return (
       <div className="p-4">
@@ -29,7 +31,15 @@ export function RequestTable({ requests }: RequestTableProps) {
         </thead>
         <tbody className="divide-y divide-slate-100">
           {requests.map((request) => (
-            <tr className="hover:bg-slate-50" key={request.id}>
+            <tr
+              className={
+                request.id === selectedId
+                  ? 'cursor-pointer bg-indigo-50'
+                  : 'cursor-pointer hover:bg-slate-50'
+              }
+              key={request.id}
+              onClick={() => onSelect(request)}
+            >
               <td className="px-4 py-3">
                 <span className="rounded-md bg-indigo-50 px-2 py-1 font-mono text-xs font-semibold text-indigo-700">
                   {request.method}

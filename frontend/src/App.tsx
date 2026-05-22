@@ -1,11 +1,18 @@
 import { useEffect, useState } from 'react'
 import { RefreshCw, Trash2 } from 'lucide-react'
+import { RequestDetail } from './components/RequestDetail'
 import { RequestTable } from './components/RequestTable'
-import { clearRequests, listRequests } from './lib/api'
+import {
+  clearRequests,
+  listRequests,
+  replayRequest,
+  replayRequestWithEdits,
+} from './lib/api'
 import type { RequestRecord } from './lib/types'
 
 function App() {
   const [requests, setRequests] = useState<RequestRecord[]>([])
+  const [selectedRequest, setSelectedRequest] = useState<RequestRecord | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -14,7 +21,14 @@ function App() {
 
   async function refresh() {
     try {
-      setRequests(await listRequests())
+      const nextRequests = await listRequests()
+      setRequests(nextRequests)
+      setSelectedRequest((current) => {
+        if (!current) {
+          return null
+        }
+        return nextRequests.find((request) => request.id === current.id) ?? current
+      })
       setError(null)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not load requests')
@@ -23,7 +37,28 @@ function App() {
 
   async function clear() {
     await clearRequests()
+    setSelectedRequest(null)
     await refresh()
+  }
+
+  async function replayOriginal() {
+    if (!selectedRequest) {
+      return
+    }
+
+    const replayed = await replayRequest(selectedRequest.id)
+    await refresh()
+    setSelectedRequest(replayed)
+  }
+
+  async function replayEdited(body: unknown) {
+    if (!selectedRequest) {
+      return
+    }
+
+    const replayed = await replayRequestWithEdits(selectedRequest.id, body)
+    await refresh()
+    setSelectedRequest(replayed)
   }
 
   return (
@@ -56,8 +91,19 @@ function App() {
           </div>
         </header>
         {error && <p className="mb-4 text-sm text-rose-700">{error}</p>}
-        <div className="rounded-lg border border-slate-200 bg-white">
-          <RequestTable requests={requests} />
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_420px]">
+          <div className="rounded-lg border border-slate-200 bg-white">
+            <RequestTable
+              onSelect={setSelectedRequest}
+              requests={requests}
+              selectedId={selectedRequest?.id ?? null}
+            />
+          </div>
+          <RequestDetail
+            request={selectedRequest}
+            onReplay={() => void replayOriginal()}
+            onReplayWithEdits={(body) => void replayEdited(body)}
+          />
         </div>
       </div>
     </main>

@@ -34,3 +34,9 @@
 - Created the Vite React TypeScript frontend.
 - Added request history table with method, path, response status, duration, and timestamp.
 - Added refresh and clear controls.
+
+## Phase 7: Request Detail and Replay UI
+
+- Added request detail view with request headers, request body, and response body.
+- Added original replay action.
+- Added editable JSON body replay workflow.

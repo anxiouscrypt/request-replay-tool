@@ -26,6 +26,23 @@ export function listRequests() {
   return request<RequestRecord[]>('/requests')
 }
 
+export function getRequest(requestId: string) {
+  return request<RequestRecord>(`/requests/${requestId}`)
+}
+
+export function replayRequest(requestId: string) {
+  return request<RequestRecord>(`/requests/${requestId}/replay`, {
+    method: 'POST',
+  })
+}
+
+export function replayRequestWithEdits(requestId: string, requestBody: unknown) {
+  return request<RequestRecord>(`/requests/${requestId}/replay-with-edits`, {
+    body: JSON.stringify({ requestBody }),
+    method: 'POST',
+  })
+}
+
 export function clearRequests() {
   return request<void>('/requests', { method: 'DELETE' })
 }

@@ -10,10 +10,10 @@
 - SQLite request persistence
 - Replay APIs
 - Request history dashboard
+- Detail and edit/replay UI
 
 ## Planned
 
-- Detail and edit/replay UI
 - Backend tests
 
 ## Future Improvements
