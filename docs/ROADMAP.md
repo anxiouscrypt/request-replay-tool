@@ -4,6 +4,8 @@
 
 - Repository structure
 - Documentation baseline
+- Proxy architecture design
+- Security limitations
 
 ## Planned
 

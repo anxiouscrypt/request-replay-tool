@@ -22,6 +22,15 @@ Screenshot placeholder: `docs/screenshots/request-replay-tool.png`
 
 Client request -> FastAPI proxy -> target API -> SQLite request history -> React dashboard.
 
+```txt
+Client
+  -> /proxy/{path}
+  -> TARGET_BASE_URL/{path}
+  -> response
+  -> SQLite request history
+  -> React replay dashboard
+```
+
 ## Tech Stack
 
 - React, TypeScript, Vite
