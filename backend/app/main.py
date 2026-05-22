@@ -6,8 +6,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 
 from app.database import init_db
-from app.models import RequestRecord
+from app.models import ReplayWithEditsRequest, RequestRecord
 from app.proxy import forward_request
+from app.replay import replay_record
 from app.request_store import (
     delete_request_records,
     get_request_record,
@@ -75,3 +76,26 @@ def read_request(request_id: str) -> RequestRecord:
 @app.delete("/requests", status_code=204)
 def clear_requests() -> None:
     delete_request_records()
+
+
+@app.post("/requests/{request_id}/replay", response_model=RequestRecord)
+async def replay_request(request_id: str) -> RequestRecord:
+    record = get_request_record(request_id)
+
+    if record is None:
+        raise HTTPException(status_code=404, detail="Request not found")
+
+    return await replay_record(record)
+
+
+@app.post("/requests/{request_id}/replay-with-edits", response_model=RequestRecord)
+async def replay_request_with_edits(
+    request_id: str,
+    payload: ReplayWithEditsRequest,
+) -> RequestRecord:
+    record = get_request_record(request_id)
+
+    if record is None:
+        raise HTTPException(status_code=404, detail="Request not found")
+
+    return await replay_record(record, edited_body=payload.requestBody)

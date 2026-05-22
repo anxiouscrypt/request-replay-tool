@@ -22,3 +22,9 @@
 - Added SQLite request history storage.
 - Stored proxied request and response metadata.
 - Added request list, detail, and clear APIs.
+
+## Phase 5: Replay APIs
+
+- Added original request replay.
+- Added edited-body replay.
+- Stored replay results as new request records.

@@ -8,10 +8,10 @@
 - Security limitations
 - HTTP proxy forwarding
 - SQLite request persistence
+- Replay APIs
 
 ## Planned
 
-- Replay APIs
 - Request history dashboard
 - Detail and edit/replay UI
 - Backend tests
