@@ -12,9 +12,7 @@
 - Request history dashboard
 - Detail and edit/replay UI
 - Backend tests
-
-## Planned
-
+- Local setup and dev runner
 
 ## Future Improvements
 

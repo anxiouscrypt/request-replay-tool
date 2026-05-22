@@ -20,6 +20,7 @@ Client -> /proxy/{path} -> target API -> response
 - Local development only.
 - Captured headers and bodies may contain secrets.
 - No authentication, access control, or production hardening.
+- Do not expose this service to a public network.
 
 ## Proxy Design
 

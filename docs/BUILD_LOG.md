@@ -46,3 +46,10 @@
 - Added proxy forwarding and persistence tests.
 - Added request history clearing test.
 - Added original replay and edited replay tests.
+
+## Phase 9: Final Polish
+
+- Added README setup instructions and curl example.
+- Added `scripts/dev.sh` for running backend and frontend together.
+- Reiterated local-only security limitations.
+- Removed unused Vite starter files.

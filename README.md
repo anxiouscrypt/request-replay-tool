@@ -40,7 +40,68 @@ Client
 
 ## Local Setup
 
-Setup instructions will be completed with the MVP.
+Prerequisites:
+
+- Node.js 20 or newer
+- Python 3.11 or newer
+
+Configure the target API:
+
+```bash
+cp .env.example .env
+# edit TARGET_BASE_URL if needed
+```
+
+Run both services:
+
+```bash
+chmod +x scripts/dev.sh
+./scripts/dev.sh
+```
+
+The frontend runs at `http://localhost:5173`.
+The replay backend runs at `http://localhost:8000`.
+
+Manual backend:
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r backend/requirements.txt
+TARGET_BASE_URL=http://localhost:9000 PYTHONPATH=backend .venv/bin/uvicorn app.main:app --reload --port 8000
+```
+
+Manual frontend:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Run checks:
+
+```bash
+PYTHONPATH=backend .venv/bin/pytest backend/tests
+cd frontend && npm run build
+```
+
+## Example Usage
+
+With a target API running at `http://localhost:9000`, send traffic through the proxy:
+
+```bash
+curl -X POST http://localhost:8000/proxy/orders \
+  -H 'Content-Type: application/json' \
+  --data '{"sku":"latte"}'
+```
+
+Then open the dashboard to inspect and replay the captured request.
+
+## What I Learned
+
+- Debugging tools need to preserve context, not just the final response.
+- Replay is most useful when it stores each replay result as a new comparable record.
+- Proxy tools should document security limitations clearly because they can capture sensitive data.
 
 ## API Endpoints
 
