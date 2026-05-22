@@ -7,10 +7,10 @@
 - Proxy architecture design
 - Security limitations
 - HTTP proxy forwarding
+- SQLite request persistence
 
 ## Planned
 
-- SQLite request persistence
 - Replay APIs
 - Request history dashboard
 - Detail and edit/replay UI

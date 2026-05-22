@@ -1,3 +1,6 @@
+import json
+from dataclasses import dataclass
+from typing import Any
 from time import perf_counter
 
 import httpx
@@ -19,6 +22,17 @@ HOP_BY_HOP_HEADERS = {
 }
 
 
+@dataclass
+class ProxyResult:
+    response: Response
+    duration_ms: float
+    target_url: str
+    request_headers: dict[str, str]
+    request_body: Any
+    response_status: int
+    response_body: Any
+
+
 def build_target_url(path: str, query_string: bytes) -> str:
     target_path = path if path.startswith("/") else f"/{path}"
     url = f"{target_base_url()}{target_path}"
@@ -37,9 +51,10 @@ def forward_headers(request: Request) -> dict[str, str]:
     }
 
 
-async def forward_request(path: str, request: Request) -> tuple[Response, float]:
+async def forward_request(path: str, request: Request) -> ProxyResult:
     target_url = build_target_url(path, request.scope.get("query_string", b""))
     body = await request.body()
+    headers = forward_headers(request)
     started = perf_counter()
 
     async with httpx.AsyncClient(timeout=10.0) as client:
@@ -47,16 +62,32 @@ async def forward_request(path: str, request: Request) -> tuple[Response, float]
             request.method,
             target_url,
             content=body,
-            headers=forward_headers(request),
+            headers=headers,
         )
 
     duration_ms = (perf_counter() - started) * 1000
-
-    return (
-        Response(
-            content=upstream.content,
-            status_code=upstream.status_code,
-            media_type=upstream.headers.get("content-type"),
-        ),
-        round(duration_ms, 2),
+    response = Response(
+        content=upstream.content,
+        status_code=upstream.status_code,
+        media_type=upstream.headers.get("content-type"),
     )
+
+    return ProxyResult(
+        response=response,
+        duration_ms=round(duration_ms, 2),
+        target_url=target_url,
+        request_headers=headers,
+        request_body=parse_body(body),
+        response_status=upstream.status_code,
+        response_body=parse_body(upstream.content),
+    )
+
+
+def parse_body(body: bytes) -> Any:
+    if not body:
+        return None
+
+    try:
+        return json.loads(body)
+    except json.JSONDecodeError:
+        return body.decode("utf-8", errors="replace")

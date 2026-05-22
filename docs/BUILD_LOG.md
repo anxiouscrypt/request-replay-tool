@@ -16,3 +16,9 @@
 - Added FastAPI backend setup.
 - Added `TARGET_BASE_URL` configuration.
 - Implemented `/proxy/{path}` forwarding with method, body, query string, and safe headers.
+
+## Phase 4: Request Storage
+
+- Added SQLite request history storage.
+- Stored proxied request and response metadata.
+- Added request list, detail, and clear APIs.
